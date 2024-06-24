@@ -136,11 +136,11 @@ def main():
     filtered_df = df[(df['team_name'] == team) & (df['name'] == player)]
 
     # Plot the shot map
-    pitch = VerticalPitch(pitch_type='opta', line_zorder=2, pitch_color='#f0f0f0', line_color='black', half=True)
+    pitch = VerticalPitch(pitch_type='opta', line_zorder=2, pitch_color='white', line_color='black', half=True)
     fig, ax = pitch.draw(figsize=(10, 10))
 
     for _, shot in filtered_df.iterrows():
-      color = 'grey' if not shot['is_goal'] else 'yellow'
+      color = 'white' if not shot['is_goal'] else 'yellow'
       marker = 'o' if not shot['is_goal'] else '*'
       size = 300 if not shot['is_goal'] else 600
       pitch.scatter(shot['x_coordinate'], shot['y_coordinate'], ax=ax, color=color, s=size, edgecolors='black', alpha=0.9, marker=marker)
