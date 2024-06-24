@@ -148,7 +148,9 @@ def main():
     # Player and team annotation in the lower left corner of the plot
     player_name = player  # Assuming 'player' contains the selected player's name
     team_name = team  # Assuming 'team' contains the selected team's name
-    ax.text(0.05, 0.05, f"{player_name}\n{team_name}", fontsize=32, ha='left', va='bottom', transform=ax.transAxes, color='black', style='italic', fontname='Arial Black')
+    ax.text(0.05, 0.02, f"{player_name}\n", fontsize=35, ha='left', va='bottom', transform=ax.transAxes, color='black', style='italic', fontname='Arial Black')
+    ax.text(0.05, 0.045, f"{team_name}", fontsize=30, ha='left', va='bottom', transform=ax.transAxes, color='black', style='italic', fontname='Arial Black')
+
 
     st.pyplot(fig)
 
