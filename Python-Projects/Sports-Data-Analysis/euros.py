@@ -136,16 +136,37 @@ def main():
     filtered_df = df[(df['team_name'] == team) & (df['name'] == player)]
 
     # Plot the shot map
-    pitch = VerticalPitch(pitch_type='opta', line_zorder=2, pitch_color='white', line_color='black', half=True)
+    pitch = VerticalPitch(pitch_type='opta', line_zorder=2, pitch_color='#a7c957', line_color='black', half=True)
+    # Plot the shot map as before
     fig, ax = pitch.draw(figsize=(10, 10))
 
     for _, shot in filtered_df.iterrows():
-      color = 'white' if not shot['is_goal'] else 'yellow'
-      marker = 'o' if not shot['is_goal'] else '*'
-      size = 300 if not shot['is_goal'] else 600
-      pitch.scatter(shot['x_coordinate'], shot['y_coordinate'], ax=ax, color=color, s=size, edgecolors='black', alpha=0.9, marker=marker)
+        color = 'white' if not shot['is_goal'] else 'yellow'
+        marker = 'o' if not shot['is_goal'] else '*'
+        size = 300 if not shot['is_goal'] else 600
+        pitch.scatter(shot['x_coordinate'], shot['y_coordinate'], ax=ax, color=color, s=size, edgecolors='black', alpha=0.9, marker=marker)
+
+    # Player and team annotation in the lower left corner of the plot
+    player_name = player  # Assuming 'player' contains the selected player's name
+    team_name = team  # Assuming 'team' contains the selected team's name
+    ax.text(0.05, 0.05, f"{player_name}\n{team_name}", fontsize=32, ha='left', va='bottom', transform=ax.transAxes, color='black', style='italic', fontname = 'Arial Black')
 
     st.pyplot(fig)
+
+    from io import BytesIO
+
+    # Save the figure to a BytesIO object
+    buf = BytesIO()
+    fig.savefig(buf, format='jpeg')
+    buf.seek(0)
+
+    # Create a download button and offer the plot for download
+    st.download_button(
+        label="Download Shot Map as JPEG",
+        data=buf,
+        file_name="shot_map.jpeg",
+        mime="image/jpeg"
+    )
 
           # Calculate total shots, total goals, and total matches played by the player
     total_shots = len(filtered_df)
