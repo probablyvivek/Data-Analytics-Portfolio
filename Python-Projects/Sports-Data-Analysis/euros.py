@@ -137,7 +137,6 @@ def main():
 
     # Plot the shot map
     pitch = VerticalPitch(pitch_type='opta', line_zorder=2, pitch_color='#a7c957', line_color='black', half=True)
-    # Plot the shot map as before
     fig, ax = pitch.draw(figsize=(10, 10))
 
     for _, shot in filtered_df.iterrows():
@@ -149,7 +148,7 @@ def main():
     # Player and team annotation in the lower left corner of the plot
     player_name = player  # Assuming 'player' contains the selected player's name
     team_name = team  # Assuming 'team' contains the selected team's name
-    ax.text(0.05, 0.05, f"{player_name}\n{team_name}", fontsize=32, ha='left', va='bottom', transform=ax.transAxes, color='black', style='italic', fontname = 'Arial Black')
+    ax.text(0.05, 0.05, f"{player_name}\n{team_name}", fontsize=32, ha='left', va='bottom', transform=ax.transAxes, color='black', style='italic', fontname='Arial Black')
 
     st.pyplot(fig)
 
@@ -168,25 +167,9 @@ def main():
         mime="image/jpeg"
     )
 
-          # Calculate total shots, total goals, and total matches played by the player
-    total_shots = len(filtered_df)
-    total_goals = filtered_df['is_goal'].sum()
-    total_matches = filtered_df['match_id'].nunique()
-
-    # Display the stats in 3 columns
-    col1, col2, col3 = st.columns(3)
-    with col2:
-      st.markdown(f"<h2 style='text-align: center;'>Shots: {total_shots}</h2>", unsafe_allow_html=True)
-    with col3:
-      st.markdown(f"<h2 style='text-align: center;'>Goals: {total_goals}</h2>", unsafe_allow_html=True)
-    with col1:
-      st.markdown(f"<h2 style='text-align: center;'>Matches: {total_matches}</h2>", unsafe_allow_html=True)
-
-
     # Close the database connection
     cursor.close()
     conn.close()
 
 if __name__ == "__main__":
     main()
-
