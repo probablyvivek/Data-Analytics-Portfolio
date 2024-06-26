@@ -14,7 +14,7 @@ Welcome to my Data Analytics Portfolio! This repository showcases my projects an
 ### Project 1: Sports Data Analysis
 - **Description:** In this project, I analyze data from the Euros 2024 tournament. The project includes web scraping, data transformation, and storing the data in a database. This work is based on the tutorial from McKay Johns' course.
  [Course](https://mckay-s-site.thinkific.com) 
-- **Link to Code:** [Sport Data Analysis](https://github.com/probablyvivek/Data-Analytics-Portfolio/tree/main/Python%20Projects/Sports%20Data%20Analysis) 
+- **Link to Code:** [Sport Data Analysis](https://github.com/probablyvivek/Data-Analytics-Portfolio/tree/main/Python-Projects/Sports-Data-Analysis)
 
 
 ### Project 2: Pokemon Data Analysis
