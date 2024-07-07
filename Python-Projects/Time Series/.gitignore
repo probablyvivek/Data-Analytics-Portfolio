@@ -1,3 +1,13 @@
 requirements.txt
 Data
 venv
+00-Intro-to-Time-Series
+01-NumPy
+02-Pandas
+03-Pandas-Visualization
+04-Time-Series-with-Pandas
+05-Time-Series-Analysis-with-Statsmodels
+06-General-Forecasting-Models
+07-Deep-Learning-Models
+08-Prophet-Library
+09-NO-VIDEO-Bonus-Notebooks
