@@ -1,178 +1,205 @@
 import streamlit as st
 import pandas as pd
-import plotly.graph_objects as go
 import plotly.express as px
-import numpy as np
 
-# Load data
+
+
+# Load the data
 @st.cache_data
 def load_data():
-    df = pd.read_csv('Olympic_Athlete_Event_Results.csv')
-    df_bio = pd.read_csv('Olympic_Athlete_Bio.csv')
+    df_results = pd.read_csv('Olympic_Athlete_Event_Results.csv')
     df_games = pd.read_csv('Olympics_Games.csv')
-    
-    # Merge dataframes
-    df = pd.merge(df, df_bio, on='athlete_id', how='left')
-    df = pd.merge(df, df_games, on='edition_id', how='left')
-    
-    # Clean data
-    if 'year' not in df.columns:
-        if 'edition' in df.columns:
-            df['year'] = df['edition'].str.extract(r'(\d{4})')
-        elif 'edition.1' in df.columns:
-            df['year'] = df['edition.1'].str.extract(r'(\d{4})')
-    
-    df['country'] = df['country'].str.strip()
+    df_bio = pd.read_csv('Olympic_Athlete_Bio.csv')
+    df_medal = pd.read_csv('Olympic_Games_Medal_Tally.csv')
     
     # Filter for Summer Olympics
-    df = df[df['year'].notna()]
-    df['year'] = df['year'].astype(int)
-    df = df[df['year'] % 4 == 0]  # Summer Olympics years
-    df = df.fillna('-')
+    summer_editions = df_games[df_games['edition'].str.contains("Summer", na=False)]['edition_id'].tolist()
     
-    return df
+    # Merge dataframes
+    df = pd.merge(df_results, df_games[['edition_id', 'year', 'city']], on='edition_id', how='left')
+    df = pd.merge(df, df_bio[['athlete_id', 'name', 'sex', 'country']], on='athlete_id', how='left')
+    
+    # Filter for Summer Olympics
+    df = df[df['edition_id'].isin(summer_editions)]
+    df_medal = df_medal[df_medal['edition'].str.contains("Summer", na=False)]
+    
+    return df, df_medal
 
-def display_medal_winners(df, title):
-    st.subheader(title)
-    if not df.empty:
-        st.write(df[['year', 'city', 'sport', 'event', 'name', 'sex', 'medal', 'country']])
-    else:
-        st.write("No medals in this category.")
+df, df_Medal = load_data()
 
-def plot_gender_participation(df, country_selection, medal_type, year_range=None):
-    st.subheader("Gender Participation Over the Years")
-    
-    # Filter data based on selection and medal type
-    if country_selection == "India":
-        df_filtered = df[df['country'] == 'India']
-    else:
-        df_filtered = df
-    
-    if medal_type == "Individual":
-        df_filtered = df_filtered[df_filtered['isTeamSport'] == False]
-    else:  # Team
-        df_filtered = df_filtered[df_filtered['isTeamSport'] == True]
-    
-    # Apply year filter if specified
-    if year_range:
-        start_year, end_year = year_range
-        df_filtered = df_filtered[(df_filtered['year'] >= start_year) & (df_filtered['year'] <= end_year)]
-    
-    # Calculate gender participation
-    participation = df_filtered.groupby('year').agg(
-        total_count=('athlete_id', 'nunique'),
-        male_count=('sex', lambda x: (x == 'Male').sum()),
-        female_count=('sex', lambda x: (x == 'Female').sum())
-    ).reset_index()
-    
-    # Calculate percentages
-    participation['male_percentage'] = np.where(participation['total_count'] > 0, 
-                                                (participation['male_count'] / participation['total_count']) * 100, 
-                                                0)
-    participation['female_percentage'] = np.where(participation['total_count'] > 0, 
-                                                  (participation['female_count'] / participation['total_count']) * 100, 
-                                                  0)
-    
-    # Cap percentages at 100% to avoid any issues
-    participation['male_percentage'] = participation['male_percentage'].clip(upper=100)
-    participation['female_percentage'] = participation['female_percentage'].clip(upper=100)
-    
-    # Create the plot
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=participation['year'], y=participation['male_percentage'],
-                             mode='lines+markers', name='Male'))
-    fig.add_trace(go.Scatter(x=participation['year'], y=participation['female_percentage'],
-                             mode='lines+markers', name='Female'))
-    
-    fig.update_layout(
-        title=f'Percentage of Male and Female {medal_type} Athletes Over the Years ({country_selection})',
-        xaxis_title='Year',
-        yaxis_title='Percentage of Athletes',
-        legend_title='Gender',
-        hovermode="x unified"
-    )
-    
-    st.plotly_chart(fig)
+#Image Header
+
+from PIL import Image
+image = Image.open('Olympic Rings.png')
+st.image(image, width=500)
 
 
-def display_best_performances(df, country_selection, medal_type, sport_filter=None):
-    st.subheader(f"Best Performances - {country_selection}")
-    
-    if country_selection == "India":
-        df_filtered = df[df['country'] == 'India']
-    else:
-        df_filtered = df
-    
-    if medal_type == "Individual":
-        df_filtered = df_filtered[df_filtered['isTeamSport'] == False]
-    else:
-        df_filtered = df_filtered[df_filtered['isTeamSport'] == True]
-    
-    if sport_filter:
-        df_filtered = df_filtered[df_filtered['sport'] == sport_filter]
-    
-    df_filtered = df_filtered[df_filtered['medal'] != '-']
-    
-    performances = df_filtered.groupby(['sport', 'name', 'country']).agg(
-        gold=('medal', lambda x: (x == 'Gold').sum()),
-        silver=('medal', lambda x: (x == 'Silver').sum()),
-        bronze=('medal', lambda x: (x == 'Bronze').sum())
-    ).reset_index()
-    
-    performances['total'] = performances['gold'] + performances['silver'] + performances['bronze']
-    performances = performances.sort_values(['gold', 'silver', 'bronze', 'total'], ascending=[False, False, False, False])
-    
-    st.write(performances.head(5))
+# Center the header
+st.markdown("<h1 style='text-align: left;'>Summer Olympics Dashboard</h1>", unsafe_allow_html=True)
 
-# Main app
-def main():
-    st.title("Olympics Dashboard")
-    
-    df = load_data()
-    
-    # Sidebar
-    st.sidebar.header("Filters")
-    country_selection = st.sidebar.radio("Select Region", ["World", "India"])
-    medal_type = st.sidebar.radio("Medal Type", ["Individual", "Team"], index=0)
-    year_range = st.sidebar.slider("Select Year Range", df['year'].min(), df['year'].max(), (df['year'].min(), df['year'].max()))
-    
-    # Sport selection dropdown
-    sports = df['sport'].unique()
-    sports = np.insert(sports, 0, 'All Sports')
-    sport_filter = st.sidebar.selectbox("Select Sport", sports)
-    
-    # Filter data based on selection
-    if country_selection == "India":
-        df_filtered = df[df['country'] == 'India']
-    else:
-        df_filtered = df
-    
-    # Filter based on medal type
-    if medal_type == "Individual":
-        df_medals = df_filtered[(df_filtered['medal'] != '-') & (df_filtered['isTeamSport'] == False)]
-    else:  # Team
-        df_medals = df_filtered[(df_filtered['medal'] != '-') & (df_filtered['isTeamSport'] == True)]
-    
-    # Main content
-    st.header(f"{country_selection}'s Olympic {medal_type} Medals")
-    
-    # Display medal winners
-    display_medal_winners(df_medals, f"{medal_type} Medal Winners")
-    
-    # Gender participation over the years
-    plot_gender_participation(df_filtered, country_selection, medal_type, year_range)
-    
-    # Top medal-winning sports
-    st.subheader(f"Top Medal-Winning Sports")
-    top_sports = df_medals['sport'].value_counts().head(5)
-    if not top_sports.empty:
-        fig = px.pie(values=top_sports.values, names=top_sports.index, title=f'Top {medal_type} Medal-Winning Sports')
-        st.plotly_chart(fig)
-    else:
-        st.write("No medals won in this category.")
-    
-    # Best Performances
-    display_best_performances(df_filtered, country_selection, medal_type, sport_filter)
+# 1. Where the Olympics has happened
+st.subheader('1. Where the Summer Olympics has happened')
 
-if __name__ == "__main__":
-    main()
+# Read the CSV file into a DataFrame
+df_Games = pd.read_csv("Olympics_Games.csv")
+
+# Filter for rows where the edition is "Summer"
+df_Summer_Games = df_Games[df_Games['edition'].str.contains("Summer")].sort_values(by='year', ascending=False)
+
+# Replace missing values in 'competition_date' for specific 'edition_id' values
+df_Summer_Games.loc[df_Summer_Games['edition_id'].isin([50, 51, 52]), 'competition_date'] = "Not Held Due to War"
+
+# Select relevant columns
+df_Summer_Games = df_Summer_Games[['edition', 'city', 'year', 'competition_date']]
+
+# Display the DataFrame
+st.dataframe(df_Summer_Games, width=1000, height=500, use_container_width=True)
+
+# 2. Male and Female Participation Over Time (Percentage)
+st.subheader('2. Male and Female Participation Over Time')
+
+# Group by year and sex, then calculate the percentage
+participation_data = df.groupby(['year', 'sex']).size().unstack(fill_value=0)
+participation_data_percent = participation_data.div(participation_data.sum(axis=1), axis=0) * 100
+participation_data_percent = participation_data_percent.reset_index()
+
+fig = px.area(participation_data_percent, x='year', y=['Female', 'Male'],
+              title='Male and Female Participation Over Time (Percentage)',
+              labels={'value': 'Percentage of Participants', 'variable': 'Gender'},
+              color_discrete_map={'Female': 'rgb(255, 127, 14)', 'Male': 'rgb(31, 119, 180)'},
+              )
+
+fig.update_layout(yaxis_range=[0, 100])
+
+st.plotly_chart(fig)
+
+# 3. Country Medal Data
+st.subheader('3. Country Medal Data')
+
+# Year selection for medal data
+year_options = ['Overall'] + sorted(df_Medal['year'].unique(), reverse=True)
+selected_year_medals = st.selectbox('Select Year for Medal Data', year_options)
+
+if selected_year_medals == 'Overall':
+    # Group by 'country' and sum the medals
+    df_Medal_country = df_Medal.groupby('country').agg({
+        'gold': 'sum',
+        'silver': 'sum',
+        'bronze': 'sum',
+        'total': 'sum'
+    }).sort_values(by='total', ascending=False).reset_index()
+else:
+    # Filter for the selected year and group by country
+    df_Medal_country = df_Medal[df_Medal['year'] == selected_year_medals].groupby('country').agg({
+        'gold': 'sum',
+        'silver': 'sum',
+        'bronze': 'sum',
+        'total': 'sum'
+    }).sort_values(by='total', ascending=False).reset_index()
+
+# Add rank column based on the total medals
+df_Medal_country['Rank'] = df_Medal_country['total'].rank(ascending=False, method='first').astype(int)
+
+# Reorder columns to include Rank and reset the index
+df_Medal_country = df_Medal_country[['Rank', 'country', 'gold', 'silver', 'bronze', 'total']]
+
+# Display the DataFrame
+st.dataframe(df_Medal_country, width=1000, use_container_width=True)
+
+# 4. Olympic Medal Winners
+st.header('4. Olympic Medal Winners')
+
+# Filter for medal winners only
+df_medal_winners = df[df['medal'].notna()]
+
+# # Known team sports to filter out
+# team_sports = ['Basketball', 'Football', 'Hockey', 'Volleyball', 'Handball', 'Water Polo']
+
+# # Filter out team sports
+# df_medal_winners = df_medal_winners[~df_medal_winners['sport'].isin(team_sports)]
+
+# Ensure 'country' and 'name' columns are of type str
+df_medal_winners['country'] = df_medal_winners['country'].astype(str)
+df_medal_winners['name'] = df_medal_winners['name'].astype(str).replace('nan', '')
+
+# Function to get filtered options
+def get_filtered_options(df, column, filters):
+    filtered_df = df.copy()
+    for key, value in filters.items():
+        if value and key != column:
+            filtered_df = filtered_df[filtered_df[key].isin(value)]
+    return sorted(filtered_df[column].unique())
+
+# Initialize session state for filters if not already present
+if 'filters' not in st.session_state:
+    st.session_state.filters = {
+        'year': [],
+        'country': [],
+        'sport': [],
+        'name': []
+    }
+
+# Create 4 columns for filters
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    year_options = get_filtered_options(df_medal_winners, 'year', st.session_state.filters)
+    selected_years = st.multiselect('Select Year(s)', 
+                                    options=sorted(year_options, reverse=True),
+                                    default=st.session_state.filters['year'],
+                                    key='year_multiselect')
+    st.session_state.filters['year'] = selected_years
+
+with col2:
+    country_options = get_filtered_options(df_medal_winners, 'country', st.session_state.filters)
+    selected_countries = st.multiselect('Select Country(s)', 
+                                        options=sorted(country_options),
+                                        default=st.session_state.filters['country'],
+                                        key='country_multiselect')
+    st.session_state.filters['country'] = selected_countries
+
+with col3:
+    sport_options = get_filtered_options(df_medal_winners, 'sport', st.session_state.filters)
+    selected_sports = st.multiselect('Select Sport(s)', 
+                                     options=sorted(sport_options),
+                                     default=st.session_state.filters['sport'],
+                                     key='sport_multiselect')
+    st.session_state.filters['sport'] = selected_sports
+
+with col4:
+    athlete_options = get_filtered_options(df_medal_winners, 'name', st.session_state.filters)
+    selected_athletes = st.multiselect('Select Athlete(s)', 
+                                       options=sorted(athlete_options),
+                                       default=st.session_state.filters['name'],
+                                       key='athlete_multiselect')
+    st.session_state.filters['name'] = selected_athletes
+
+# Filter data based on selections
+filtered_df = df_medal_winners.copy()
+
+for column, selected_values in st.session_state.filters.items():
+    if selected_values:
+        filtered_df = filtered_df[filtered_df[column].isin(selected_values)]
+
+# Display medal winners if filtered_df is not empty
+if filtered_df.empty:
+    st.write('No data available for the selected filters.')
+else:
+    st.subheader('Medal Winners')
+
+    df_medal = filtered_df[['year', 'city', 'sport', 'event', 'name', 'sex', 'medal']]
+
+    # Create a custom order for medals
+    medal_order = {'Gold': 1, 'Silver': 2, 'Bronze': 3}
+    df_medal['medal_order'] = df_medal['medal'].map(medal_order)
+
+    # Sort by year in descending order and then by medal
+    df_medal = df_medal.sort_values(by=['year', 'medal_order'], ascending=[False, True])
+
+    # Drop the temporary medal_order column
+    df_medal = df_medal.drop(columns=['medal_order'])
+
+    # Remove the row index
+    df_medal = df_medal.reset_index(drop=True)
+
+    st.dataframe(df_medal, width=2000)
