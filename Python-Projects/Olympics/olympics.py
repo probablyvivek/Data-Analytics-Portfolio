@@ -253,7 +253,7 @@ elif page == "Champions Showcase":
             # Sort by Gold, then Silver, then Bronze, then Total
             top_athletes = top_athletes.sort_values(
                 ['Gold', 'Silver', 'Bronze', 'Total'], 
-                ascending=[False, False, False, False]
+                ascending=[True, True, True, True]
             ).head(10)
             
             # Reverse the order for correct display in horizontal bar chart
