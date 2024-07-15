@@ -245,25 +245,25 @@ elif page == "Champions Showcase":
             df_medal.columns = df_medal.columns.str.capitalize()
             st.dataframe(df_medal.set_index('Year'), width=2000)
             
-            # Updated top athletes calculation with refined sorting
-            top_athletes = filtered_df.groupby('name')['medal'].value_counts().unstack(fill_value=0)
-            top_athletes['Total'] = top_athletes.sum(axis=1)
-            top_athletes = top_athletes.sort_values(['Gold', 'Silver', 'Bronze', 'Total'], ascending=[False, False, False, False]).head(10) 
+            # # Updated top athletes calculation with refined sorting
+            # top_athletes = filtered_df.groupby('name')['medal'].value_counts().unstack(fill_value=0)
+            # top_athletes['Total'] = top_athletes.sum(axis=1)
+            # top_athletes = top_athletes.sort_values(['Gold', 'Silver', 'Bronze', 'Total'], ascending=[False, False, False, False]).head(10) 
             
-            fig_top_athletes = go.Figure()
-            for medal, color in zip(['Gold', 'Silver', 'Bronze'], ['#FFD700', '#C0C0C0', '#CD7F32']):
-                fig_top_athletes.add_trace(go.Bar(y=top_athletes.index, x=top_athletes[medal], name=medal, orientation='h', marker_color=color))
-            fig_top_athletes.update_layout(
-                title='Top 10 Athletes by Medal Count (Gold Priority)', 
-                xaxis_title='Number of Medals', 
-                yaxis_title='Athlete',
-                barmode='stack', 
-                height=400, 
-                width=600, 
-                margin=dict(l=50, r=50, t=50, b=50),
-                legend_title_text='Medal Type', 
-                yaxis={'categoryorder':'total ascending'}
-            )
-            st.plotly_chart(fig_top_athletes, use_container_width=True)
+            # fig_top_athletes = go.Figure()
+            # for medal, color in zip(['Gold', 'Silver', 'Bronze'], ['#FFD700', '#C0C0C0', '#CD7F32']):
+            #     fig_top_athletes.add_trace(go.Bar(y=top_athletes.index, x=top_athletes[medal], name=medal, orientation='h', marker_color=color))
+            # fig_top_athletes.update_layout(
+            #     title='Top 10 Athletes by Medal Count (Gold Priority)', 
+            #     xaxis_title='Number of Medals', 
+            #     yaxis_title='Athlete',
+            #     barmode='stack', 
+            #     height=400, 
+            #     width=600, 
+            #     margin=dict(l=50, r=50, t=50, b=50),
+            #     legend_title_text='Medal Type', 
+            #     yaxis={'categoryorder':'total ascending'}
+            # )
+            # st.plotly_chart(fig_top_athletes, use_container_width=True)
     else:
         st.warning("No data available for Champions Showcase. Please check the data source.")
