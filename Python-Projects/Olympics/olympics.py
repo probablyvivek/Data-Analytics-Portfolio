@@ -263,15 +263,5 @@ elif page == "Champions Showcase":
             medal_by_country = filtered_df.groupby('country')['medal'].value_counts().unstack(fill_value=0)
             medal_by_country['Total'] = medal_by_country.sum(axis=1)
             medal_by_country = medal_by_country.sort_values('Total', ascending=False).head(10)
-            
-            fig_medal_by_country = go.Figure()
-            for medal, color in zip(['Gold', 'Silver', 'Bronze'], ['#FFD700', '#C0C0C0', '#CD7F32']):
-                fig_medal_by_country.add_trace(go.Bar(y=medal_by_country.index, x=medal_by_country[medal], name=medal, orientation='h', marker_color=color))
-            fig_medal_by_country.update_layout(
-                title='Top 10 Countries by Medal Count (Based on Filters)', xaxis_title='Number of Medals', yaxis_title='Country',
-                barmode='stack', height=400, width=600, margin=dict(l=50, r=50, t=50, b=50),
-                legend_title_text='Medal Type', yaxis={'categoryorder':'total ascending'}
-            )
-            st.plotly_chart(fig_medal_by_country, use_container_width=True)
     else:
         st.warning("No data available for Champions Showcase. Please check the data source.")
