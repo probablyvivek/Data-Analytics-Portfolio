@@ -8,15 +8,31 @@ import os
 # Set page configuration (must be the first Streamlit command)
 st.set_page_config(layout="wide", page_title="Summer Olympics Dashboard")
 
+def get_project_root():
+    """Returns project root folder."""
+    return os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Debug Information
+st.sidebar.write("Debug Information:")
+st.sidebar.write(f"Current working directory: {os.getcwd()}")
+st.sidebar.write(f"Files in current directory: {os.listdir()}")
+st.sidebar.write(f"Parent directory contents: {os.listdir('..')}")
+project_root = get_project_root()
+st.sidebar.write(f"Detected project root: {project_root}")
+st.sidebar.write(f"Files in project root: {os.listdir(project_root)}")
+
 # Caching functions for data loading
 @st.cache_data(ttl=3600)
 def load_csv(file_name):
+    project_root = get_project_root()
+    file_path = os.path.join(project_root, "Python-Projects", "Olympics", file_name)
     try:
-        return pd.read_csv(file_name)
+        return pd.read_csv(file_path)
     except FileNotFoundError:
-        st.error(f"Data file not found: {file_name}")
+        st.error(f"Data file not found: {file_path}")
         st.write(f"Current working directory: {os.getcwd()}")
         st.write(f"Files in current directory: {os.listdir()}")
+        st.write(f"Files in project root: {os.listdir(project_root)}")
         return pd.DataFrame()  # Return an empty DataFrame
 
 @st.cache_data(ttl=3600)
@@ -102,11 +118,13 @@ page = st.sidebar.radio("Go to", ["Home", "Host Cities", "Participation Trends",
 if page == "Home":
     st.markdown("<h1 style='text-align: center;'>Summer Olympics Dashboard</h1>", unsafe_allow_html=True)
     
+    project_root = get_project_root()
+    image_path = os.path.join(project_root, "Python-Projects", "Olympics", "Olympic Rings.png")
     try:
-        image = Image.open('Olympic Rings.png')
+        image = Image.open(image_path)
         st.image(image, width=500)
     except FileNotFoundError:
-        st.warning("Olympic Rings image not found. Displaying text instead.")
+        st.warning(f"Olympic Rings image not found at {image_path}. Displaying text instead.")
         st.markdown("## 🏅 Olympic Games")
     
     st.markdown("Created by [Vivek Tiwari](https://github.com/probablyvivek)")
@@ -245,5 +263,7 @@ elif page == "Champions Showcase":
             medal_by_country = df_medal.groupby('Country')['Medal'].value_counts().unstack(fill_value=0)
             medal_by_country['Total'] = medal_by_country.sum(axis=1)
             medal_by_country = medal_by_country.sort_values('Total', ascending=False).head(10)
+            st.write("Top 10 Countries by Medal Count")
+            st.dataframe(medal_by_country)
     else:
         st.warning("No data available for Champions Showcase. Please check the data source.")
