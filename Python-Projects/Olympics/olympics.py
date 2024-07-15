@@ -245,23 +245,25 @@ elif page == "Champions Showcase":
             df_medal.columns = df_medal.columns.str.capitalize()
             st.dataframe(df_medal.set_index('Year'), width=2000)
             
+            # Updated top athletes calculation with refined sorting
             top_athletes = filtered_df.groupby('name')['medal'].value_counts().unstack(fill_value=0)
             top_athletes['Total'] = top_athletes.sum(axis=1)
-            top_athletes = top_athletes.sort_values('Total', ascending=False).head(10)
+            top_athletes = top_athletes.sort_values(['Total', 'Gold', 'Silver'], ascending=[False, False, False]).head(10)
             
             fig_top_athletes = go.Figure()
             for medal, color in zip(['Gold', 'Silver', 'Bronze'], ['#FFD700', '#C0C0C0', '#CD7F32']):
                 fig_top_athletes.add_trace(go.Bar(y=top_athletes.index, x=top_athletes[medal], name=medal, orientation='h', marker_color=color))
             fig_top_athletes.update_layout(
-                title='Top 10 Athletes by Medal Count', xaxis_title='Number of Medals', yaxis_title='Athlete',
-                barmode='stack', height=400, width=600, margin=dict(l=50, r=50, t=50, b=50),
-                legend_title_text='Medal Type', yaxis={'categoryorder':'total ascending'}
+                title='Top 10 Athletes by Medal Count (Gold Priority)', 
+                xaxis_title='Number of Medals', 
+                yaxis_title='Athlete',
+                barmode='stack', 
+                height=400, 
+                width=600, 
+                margin=dict(l=50, r=50, t=50, b=50),
+                legend_title_text='Medal Type', 
+                yaxis={'categoryorder':'total ascending'}
             )
             st.plotly_chart(fig_top_athletes, use_container_width=True)
-            
-            # Update the medal_by_country calculation to use the filtered dataframe
-            medal_by_country = filtered_df.groupby('country')['medal'].value_counts().unstack(fill_value=0)
-            medal_by_country['Total'] = medal_by_country.sum(axis=1)
-            medal_by_country = medal_by_country.sort_values('Total', ascending=False).head(10)
     else:
         st.warning("No data available for Champions Showcase. Please check the data source.")
