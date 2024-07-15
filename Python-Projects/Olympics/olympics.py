@@ -1,8 +1,14 @@
 import streamlit as st
 import pandas as pd
+from PIL import Image
+import plotly
 import plotly.express as px
 import plotly.graph_objects as go
-from PIL import Image
+import sys
+import subprocess
+
+subprocess.check_call([sys.executable, "-m", "pip", "install", "plotly"])
+subprocess.check_call([sys.executable, "-m", "pip", "install", "plotly-express"])
 
 # Set page configuration (must be the first Streamlit command)
 st.set_page_config(layout="wide", page_title="Summer Olympics Dashboard")
