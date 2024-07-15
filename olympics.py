@@ -267,3 +267,4 @@ elif page == "Champions Showcase":
             st.dataframe(medal_by_country)
     else:
         st.warning("No data available for Champions Showcase. Please check the data source.")
+        
