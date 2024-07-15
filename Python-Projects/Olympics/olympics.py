@@ -6,7 +6,11 @@ import plotly.express as px
 import plotly.graph_objects as go
 import sys
 import subprocess
+import ssl
+import urllib.request
 
+# Disable SSL certificate verification (use with caution)
+ssl._create_default_https_context = ssl._create_unverified_context
 subprocess.check_call([sys.executable, "-m", "pip", "install", "plotly"])
 subprocess.check_call([sys.executable, "-m", "pip", "install", "plotly-express"])
 
@@ -15,7 +19,7 @@ st.set_page_config(layout="wide", page_title="Summer Olympics Dashboard")
 
 # Load the data
 def load_data():
-    df_final_results = pd.read_csv('Olympic_Athlete_Event_Results.csv')
+    df_final_results = pd.read_csv("https://raw.githubusercontent.com/probablyvivek/Data-Analytics-Portfolio/main/Python-Projects/Olympics/Olympic_Athlete_Event_Results.csv")
     df_games = pd.read_csv('Olympics_Games.csv')
     df_bio = pd.read_csv('Olympic_Athlete_Bio.csv')
     df_medal = pd.read_csv('Olympic_Games_Medal_Tally.csv')
