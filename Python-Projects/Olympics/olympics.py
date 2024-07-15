@@ -52,6 +52,12 @@ df_Summer_Games.loc[df_Summer_Games['edition_id'].isin([50, 51, 52]), 'competiti
 # Select relevant columns
 df_Summer_Games = df_Summer_Games[['edition', 'city', 'year', 'competition_date']]
 
+# Rename the columns
+df_Summer_Games = df_Summer_Games.rename(columns={'edition': 'Edition', 'city': 'City', 'year': 'Year', 'competition_date': 'Competition Date'})
+
+#set index to year
+df_Summer_Games = df_Summer_Games.set_index('Year')
+
 # Display the DataFrame
 st.dataframe(df_Summer_Games, width=1000, height=500, use_container_width=True)
 
@@ -66,7 +72,7 @@ participation_data_percent = participation_data_percent.reset_index()
 fig = px.area(participation_data_percent, x='year', y=['Female', 'Male'],
               title='Male and Female Participation Over Time (Percentage)',
               labels={'value': 'Percentage of Participants', 'variable': 'Gender'},
-              color_discrete_map={'Female': 'rgb(255, 127, 14)', 'Male': 'rgb(31, 119, 180)'},
+              color_discrete_map={'Female': 'rgb(255, 99, 71)', 'Male': 'rgb(100, 49, 237)'},
               )
 
 fig.update_layout(yaxis_range=[0, 100])
@@ -102,6 +108,11 @@ df_Medal_country['Rank'] = df_Medal_country['total'].rank(ascending=False, metho
 
 # Reorder columns to include Rank and reset the index
 df_Medal_country = df_Medal_country[['Rank', 'country', 'gold', 'silver', 'bronze', 'total']]
+
+#Rename columns
+df_Medal_country = df_Medal_country.rename(columns={'country': 'Country', 'gold': 'Gold', 'silver': 'Silver', 'bronze': 'Bronze', 'total': 'Total'})
+
+df_Medal_country = df_Medal_country.set_index('Rank')
 
 # Display the DataFrame
 st.dataframe(df_Medal_country, width=1000, use_container_width=True)
@@ -201,5 +212,10 @@ else:
 
     # Remove the row index
     df_medal = df_medal.reset_index(drop=True)
+
+    df_medal = df_medal.rename(columns={'year': 'Year', 'city': 'City', 'sport': 'Sport', 'event': 'Event', 'name': 'Name', 'sex': 'Sex', 'medal': 'Medal'})
+
+    #set index to year
+    df_medal = df_medal.set_index('Year')
 
     st.dataframe(df_medal, width=2000)
