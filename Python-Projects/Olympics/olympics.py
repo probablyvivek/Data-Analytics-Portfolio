@@ -82,7 +82,6 @@ if page == "Home":
         image = Image.open('Olympic Rings.png')
         st.image(image, width=500)
     except FileNotFoundError:
-        st.warning("Olympic Rings image not found. Displaying text instead.")
         st.markdown("## 🏅 Olympic Games")
     
     st.markdown("Created by [Vivek Tiwari](https://github.com/probablyvivek)")
