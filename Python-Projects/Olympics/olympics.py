@@ -100,14 +100,7 @@ st.sidebar.title("Navigation")
 page = st.sidebar.radio("Go to", ["Home", "Host Cities", "Participation Trends", "Medal Analysis", "Champions Showcase"])
 
 if page == "Home":
-    st.markdown("<h1 style='text-align: center;'>Summer Olympics Dashboard</h1>", unsafe_allow_html=True)
-    
-    try:
-        image = Image.open('Olympic Rings.png')
-        st.image(image, width=500)
-    except FileNotFoundError:
-        st.warning("Olympic Rings image not found. Displaying text instead.")
-        st.markdown("## 🏅 Olympic Games")
+    st.markdown("<h1 style='text-align: center;'>🏅 Summer Olympics Dashboard</h1>", unsafe_allow_html=True)
     
     st.markdown("Created by [Vivek Tiwari](https://github.com/probablyvivek)")
     st.write("""
