@@ -9,15 +9,17 @@ import os
 st.set_page_config(layout="wide", page_title="Summer Olympics Dashboard")
 
 # Caching functions for data loading
+# Caching functions for data loading
 @st.cache_data(ttl=3600)
 def load_csv(file_name):
     try:
-        return pd.read_csv(file_name)
+        file_path = os.path.join('data', file_name)
+        return pd.read_csv(file_path)
     except FileNotFoundError:
         st.error(f"Data file not found: {file_name}")
         st.write(f"Current working directory: {os.getcwd()}")
         st.write(f"Files in current directory: {os.listdir()}")
-        return pd.DataFrame()  # Return an empty DataFrame
+        return pd.DataFrame()  # Return an empty DataFrame  # Return an empty DataFrame
 
 @st.cache_data(ttl=3600)
 def load_and_process_data():
