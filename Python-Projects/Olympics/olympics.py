@@ -151,11 +151,6 @@ elif page == "Participation Trends":
         fig.update_layout(yaxis_range=[0, 100])
         st.plotly_chart(fig)
         
-        total_participants = df.groupby('year').size().reset_index(name='Total Participants')
-        fig_total = px.line(total_participants, x='year', y='Total Participants',
-                            title='Total Olympic Participants Over Time',
-                            labels={'year': 'Year', 'Total Participants': 'Number of Athletes'})
-        st.plotly_chart(fig_total)
     else:
         st.warning("No data available for Participation Trends. Please check the data source.")
 
