@@ -248,7 +248,7 @@ elif page == "Champions Showcase":
             # Updated top athletes calculation with refined sorting
             top_athletes = filtered_df.groupby('name')['medal'].value_counts().unstack(fill_value=0)
             top_athletes['Total'] = top_athletes.sum(axis=1)
-            top_athletes = top_athletes.sort_values(['Total', 'Gold', 'Silver'], ascending=[False, False, False]).head(10)
+            top_athletes = top_athletes.sort_values(['Gold', 'Silver', 'Bronze', 'Total'], ascending=[False, False, False, False]).head(10)
             
             fig_top_athletes = go.Figure()
             for medal, color in zip(['Gold', 'Silver', 'Bronze'], ['#FFD700', '#C0C0C0', '#CD7F32']):
