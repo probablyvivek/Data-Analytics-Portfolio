@@ -174,7 +174,7 @@ elif page == "Medal Analysis":
         
         if not medal_data.empty:
             st.subheader(f'Medal Tally for {selected_year}')
-            st.dataframe(medal_data, width=1000, height=500)
+            st.dataframe(medal_data, width=2000, height=500)
             
             # Create a bar chart for the top 10 countries
             top_10 = medal_data.head(10)
