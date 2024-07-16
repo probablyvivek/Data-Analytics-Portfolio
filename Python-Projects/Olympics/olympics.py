@@ -103,19 +103,28 @@ st.sidebar.title("Navigation")
 page = st.sidebar.radio("Go to", ["Home", "Host Cities", "Participation Trends", "Medal Analysis", "Champions Showcase"])
 
 if page == "Home":
-    st.markdown("<h1 style='text-align: center;'>🏅 Summer Olympics Dashboard</h1>", unsafe_allow_html=True)
+    st.markdown("""
+    # 🏅 Welcome to the Summer Olympics Dashboard!
+
+    Dive into the rich history and exciting world of the Summer Olympic Games with our interactive dashboard. Whether you're a sports enthusiast, a data lover, or just curious about Olympic history, this tool offers a comprehensive exploration of the world's greatest sporting event.
+
+    ## What You Can Explore:
+
+    1. 🌎 **Host Cities**: Journey through time and space to see where the Olympic flame has burned brightest.
+    2. 👥 **Athlete Participation Trends**: Discover how athlete demographics have evolved over the years.
+    3. 🥇 **Medal Analysis**: Uncover which nations have dominated the podium across different eras.
+    4. 🏆 **Olympic Champions**: Celebrate the extraordinary athletes who have etched their names in Olympic history.
+
+    Navigate through these sections using the sidebar to uncover fascinating insights and visualize Olympic data like never before.
+
+    ## Data Source
+    The data powering this dashboard is sourced from Kaggle.com.
+
+    ## Get Started
+    Select a section from the sidebar to begin your Olympic data journey.
+    """)
     
     st.markdown("Created by [Vivek Tiwari](https://github.com/probablyvivek)")
-    st.write("""
-    Welcome to the Summer Olympics Dashboard! This interactive tool allows you to explore various aspects of the Olympic Games, including:
-    
-    - Host Cities
-    - Athlete Participation Trends
-    - Medal Analysis
-    - Olympic Champions
-    
-    Use the sidebar to navigate between different sections of the dashboard.
-    """)
 
 elif page == "Host Cities":
     st.header('Summer Olympics Host Cities')
