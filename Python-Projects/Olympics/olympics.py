@@ -153,6 +153,44 @@ elif page == "Participation Trends":
         
     else:
         st.warning("No data available for Participation Trends. Please check the data source.")
+elif page == "Medal Analysis":
+    st.header('Olympic Medal Analysis')
+    _, df_medal = load_and_process_data()
+    
+    if not df_medal.empty:
+        years = ['Overall'] + sorted(df_medal['year'].unique(), reverse=True)
+        selected_year = st.selectbox('Select Year', years)
+        
+        medal_data = prepare_medal_data(df_medal, selected_year)
+        
+        if not medal_data.empty:
+            st.subheader(f'Medal Tally for {selected_year}')
+            st.dataframe(medal_data, width=1000, height=500)
+            
+            # Create a bar chart for the top 10 countries
+            top_10 = medal_data.head(10)
+            fig = go.Figure()
+            for medal, color in zip(['Gold', 'Silver', 'Bronze'], ['#FFD700', '#C0C0C0', '#CD7F32']):
+                fig.add_trace(go.Bar(
+                    y=top_10['Country'],
+                    x=top_10[medal],
+                    name=medal,
+                    orientation='h',
+                    marker_color=color
+                ))
+            
+            fig.update_layout(
+                title=f'Top 10 Countries by Medal Count ({selected_year})',
+                barmode='stack',
+                yaxis={'categoryorder':'total ascending'},
+                xaxis_title='Number of Medals',
+                legend_title='Medal Type',
+                height=600
+            )
+            
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.warning(f"No medal data available for {selected_year}.")
 
 elif page == "Champions Showcase":
     st.header('Olympic Champions Showcase')
