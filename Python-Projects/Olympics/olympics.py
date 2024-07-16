@@ -161,28 +161,45 @@ elif page == "Champions Showcase":
     
     if not df_medal_winners.empty:
         if 'filters' not in st.session_state:
-            st.session_state.filters = {key: set() for key in ['year', 'country', 'sport', 'name']}
+            st.session_state.filters = {key: None for key in ['year', 'country', 'sport', 'name']}
         
         def get_filtered_options(df, column, filters):
             filtered_df = df
             for key, value in filters.items():
-                if value and key != column:
-                    filtered_df = filtered_df[filtered_df[key].isin(value)]
+                if value and key != column and value != 'All':
+                    filtered_df = filtered_df[filtered_df[key].astype(str) == str(value)]
             return sorted(filtered_df[column].unique())
+    
         
         col1, col2, col3, col4 = st.columns(4)
         for col, key in zip([col1, col2, col3, col4], ['year', 'country', 'sport', 'name']):
             with col:
                 options = get_filtered_options(df_medal_winners, key, st.session_state.filters)
-                selected = st.multiselect(f'Select {key.capitalize()}(s)', options=sorted(options, reverse=(key=='year')),
-                                        default=list(st.session_state.filters[key]), key=f'{key}_multiselect')
-                st.session_state.filters[key] = set(selected)
+                options = ['All'] + [str(option) for option in options]  # Convert all options to strings
+                if key == 'year':
+                    options = sorted(options, reverse=True)
+                else:
+                    options = sorted(options)
+                
+                # Use the current filter value as the default, or 'All' if not set
+                current_value = st.session_state.filters.get(key, 'All')
+                default_index = options.index(current_value) if current_value in options else options.index('All')
+                
+                selected = st.selectbox(f'Select {key.capitalize()}', options=options,
+                                        index=default_index, key=f'{key}_selectbox')
+                st.session_state.filters[key] = None if selected == 'All' else selected
+        
+         # Add a reset button
+        if st.button('Reset Filters'):
+            for key in st.session_state.filters:
+                st.session_state.filters[key] = None
+            st.experimental_rerun()
         
         filtered_df = df_medal_winners
         filters_applied = False
-        for column, selected_values in st.session_state.filters.items():
-            if selected_values:
-                filtered_df = filtered_df[filtered_df[column].isin(selected_values)]
+        for column, selected_value in st.session_state.filters.items():
+            if selected_value and selected_value != 'All':
+                filtered_df = filtered_df[filtered_df[column].astype(str) == str(selected_value)]
                 filters_applied = True
         
         if filtered_df.empty:
@@ -238,12 +255,18 @@ elif page == "Champions Showcase":
 
             # Determine the title based on filters
             if filters_applied:
-                if st.session_state.filters['country']:
-                    country_name = list(st.session_state.filters['country'])[0]
+                if st.session_state.filters['country'] and st.session_state.filters['country'] != 'All':
+                    country_name = st.session_state.filters['country']
                     title = f'Top {num_athletes} Medal Winners from {country_name}'
-                elif st.session_state.filters['year']:
-                    year = list(st.session_state.filters['year'])[0]
+                elif st.session_state.filters['year'] and st.session_state.filters['year'] != 'All':
+                    year = st.session_state.filters['year']
                     title = f'Top {num_athletes} Medal Winners in {year}'
+                elif st.session_state.filters['sport'] and st.session_state.filters['sport'] != 'All':
+                    sport = st.session_state.filters['sport']
+                    title = f'Top {num_athletes} Medal Winners in {sport}'
+                elif st.session_state.filters['name'] and st.session_state.filters['name'] != 'All':
+                    name = st.session_state.filters['name']
+                    title = f'Medal Wins for {name}'
                 else:
                     title = f'Top {num_athletes} Medal Winners for Selected Filters'
             else:
