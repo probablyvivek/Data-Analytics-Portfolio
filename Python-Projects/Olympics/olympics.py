@@ -154,51 +154,6 @@ elif page == "Participation Trends":
     else:
         st.warning("No data available for Participation Trends. Please check the data source.")
 
-elif page == "Participation Trends":
-    st.header('Athlete Participation Trends')
-    df, _ = load_and_process_data()
-    participation_data_percent = calculate_participation_data(df)
-    
-    if not participation_data_percent.empty:
-        fig = px.area(participation_data_percent, x='year', y=['Female', 'Male'],
-                      title='Male and Female Participation Over Time (Percentage)',
-                      labels={'value': 'Percentage of Participants', 'variable': 'Gender'},
-                      color_discrete_map={'Female': 'rgb(255, 99, 71)', 'Male': 'rgb(100, 49, 237)'})
-        fig.update_layout(yaxis_range=[0, 100])
-        st.plotly_chart(fig)
-        
-        total_participants = df.groupby('year').size().reset_index(name='Total Participants')
-        fig_total = px.line(total_participants, x='year', y='Total Participants',
-                            title='Total Olympic Participants Over Time',
-                            labels={'year': 'Year', 'Total Participants': 'Number of Athletes'})
-        st.plotly_chart(fig_total)
-    else:
-        st.warning("No data available for Participation Trends. Please check the data source.")
-
-elif page == "Medal Analysis":
-    st.header('Olympic Medal Analysis')
-    _, df_Medal = load_and_process_data()
-    
-    if not df_Medal.empty:
-        year_options = ['Overall'] + sorted(df_Medal['year'].unique(), reverse=True)
-        selected_year_medals = st.selectbox('Select Year for Medal Data', year_options)
-        
-        df_Medal_country = prepare_medal_data(df_Medal, selected_year_medals)
-        st.dataframe(df_Medal_country, width=1000, use_container_width=True)
-        
-        top_10 = df_Medal_country.head(10).reset_index()
-        fig_medals = go.Figure()
-        for medal, color in zip(['Gold', 'Silver', 'Bronze'], ['#FFD700', '#C0C0C0', '#CD7F32']):
-            fig_medals.add_trace(go.Bar(y=top_10['Country'], x=top_10[medal], name=medal, orientation='h', marker_color=color))
-        fig_medals.update_layout(
-            title=f'Top 10 Countries Medal Distribution {"Overall" if selected_year_medals == "Overall" else f"in {selected_year_medals}"}',
-            xaxis_title='Number of Medals', yaxis_title='Country', barmode='stack', height=400, width=600,
-            margin=dict(l=50, r=50, t=50, b=50), legend_title_text='Medal Type', yaxis={'categoryorder':'total ascending'}
-        )
-        st.plotly_chart(fig_medals, use_container_width=True)
-    else:
-        st.warning("No data available for Medal Analysis. Please check the data source.")
-
 elif page == "Champions Showcase":
     st.header('Olympic Champions Showcase')
     df, _ = load_and_process_data()
@@ -220,13 +175,15 @@ elif page == "Champions Showcase":
             with col:
                 options = get_filtered_options(df_medal_winners, key, st.session_state.filters)
                 selected = st.multiselect(f'Select {key.capitalize()}(s)', options=sorted(options, reverse=(key=='year')),
-                                          default=list(st.session_state.filters[key]), key=f'{key}_multiselect')
+                                        default=list(st.session_state.filters[key]), key=f'{key}_multiselect')
                 st.session_state.filters[key] = set(selected)
         
         filtered_df = df_medal_winners
+        filters_applied = False
         for column, selected_values in st.session_state.filters.items():
             if selected_values:
                 filtered_df = filtered_df[filtered_df[column].isin(selected_values)]
+                filters_applied = True
         
         if filtered_df.empty:
             st.write('No data available for the selected filters.')
@@ -239,26 +196,72 @@ elif page == "Champions Showcase":
             df_medal = df_medal.drop(columns=['medal_order']).reset_index(drop=True)
             df_medal.columns = df_medal.columns.str.capitalize()
             st.dataframe(df_medal.set_index('Year'), width=2000)
-            
-            # # Updated top athletes calculation with refined sorting
-            # top_athletes = filtered_df.groupby('name')['medal'].value_counts().unstack(fill_value=0)
-            # top_athletes['Total'] = top_athletes.sum(axis=1)
-            # top_athletes = top_athletes.sort_values(['Gold', 'Silver', 'Bronze', 'Total'], ascending=[False, False, False, False]).head(10) 
-            
-            # fig_top_athletes = go.Figure()
-            # for medal, color in zip(['Gold', 'Silver', 'Bronze'], ['#FFD700', '#C0C0C0', '#CD7F32']):
-            #     fig_top_athletes.add_trace(go.Bar(y=top_athletes.index, x=top_athletes[medal], name=medal, orientation='h', marker_color=color))
-            # fig_top_athletes.update_layout(
-            #     title='Top 10 Athletes by Medal Count (Gold Priority)', 
-            #     xaxis_title='Number of Medals', 
-            #     yaxis_title='Athlete',
-            #     barmode='stack', 
-            #     height=400, 
-            #     width=600, 
-            #     margin=dict(l=50, r=50, t=50, b=50),
-            #     legend_title_text='Medal Type', 
-            #     yaxis={'categoryorder':'total ascending'}
-            # )
-            # st.plotly_chart(fig_top_athletes, use_container_width=True)
+
+            # Calculate top athletes by medal count using the filtered DataFrame
+            top_athletes = filtered_df.groupby('name')['medal'].value_counts().unstack(fill_value=0)
+
+            # Ensure all columns exist in the DataFrame
+            for medal_type in ['Gold', 'Silver', 'Bronze']:
+                if medal_type not in top_athletes:
+                    top_athletes[medal_type] = 0
+
+            top_athletes['Total'] = top_athletes.sum(axis=1)
+
+            # Remove athletes with no medals
+            top_athletes = top_athletes[top_athletes['Total'] > 0]
+
+            # Sort athletes by Total medals first, then by Gold, Silver, Bronze for tiebreakers
+            top_athletes = top_athletes.sort_values(
+                by=['Total', 'Gold', 'Silver', 'Bronze'], 
+                ascending=[False, False, False, False]
+            )
+
+            # Always show top 10 if there are at least 10 athletes
+            top_athletes = top_athletes.head(10)
+
+            # Get the number of athletes to display
+            num_athletes = len(top_athletes)
+
+            # Create the bar chart
+            fig_top_athletes = go.Figure()
+            for medal, color in zip(['Gold', 'Silver', 'Bronze'], ['#FFD700', '#C0C0C0', '#CD7F32']):
+                fig_top_athletes.add_trace(go.Bar(y=top_athletes.index[::-1], x=top_athletes[medal][::-1], name=medal, orientation='h', marker_color=color))
+
+            # Update y-axis to show the correct order of athletes
+            fig_top_athletes.update_layout(
+                yaxis=dict(
+                    tickmode='array',
+                    tickvals=list(range(num_athletes)),
+                    ticktext=top_athletes.index[::-1].tolist()
+                )
+            )
+
+            # Determine the title based on filters
+            if filters_applied:
+                if st.session_state.filters['country']:
+                    country_name = list(st.session_state.filters['country'])[0]
+                    title = f'Top {num_athletes} Medal Winners from {country_name}'
+                elif st.session_state.filters['year']:
+                    year = list(st.session_state.filters['year'])[0]
+                    title = f'Top {num_athletes} Medal Winners in {year}'
+                else:
+                    title = f'Top {num_athletes} Medal Winners for Selected Filters'
+            else:
+                title = f'Top {num_athletes} Olympic Medal Winners of All Time'
+
+            # Update layout
+            fig_top_athletes.update_layout(
+                title=title, 
+                xaxis_title='Number of Medals', 
+                yaxis_title='Athlete',
+                barmode='stack', 
+                height=max(300, 50 * num_athletes),  # Adjust height based on number of athletes
+                width=600, 
+                margin=dict(l=50, r=50, t=50, b=50),
+                legend_title_text='Medal Type'
+            )
+
+            # Display the chart in Streamlit
+            st.plotly_chart(fig_top_athletes, use_container_width=True)
     else:
         st.warning("No data available for Champions Showcase. Please check the data source.")
