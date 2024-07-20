@@ -7,7 +7,6 @@ Welcome to my Data Analytics Portfolio! This repository showcases my projects an
 		- [Project 1: Euros 2024](#project-1-euros-2024)
 		- [Project 2: Olympics](#project-2-olympics)
 		- [Project 3: Pokemon Data Analysis](#project-3-pokemon-data-analysis)
-		- [Project 4: Pandas Go Through](#project-4-pandas-go-through)
 	- [SQL Projects](#sql-projects)
 
 
@@ -34,9 +33,6 @@ Here is the app : [The Summer Olympics Dashboard](https://summerolympics.streaml
 - **Link to Code:** [Pokemon Anaysis](https://github.com/probablyvivek/Data-Analytics-Portfolio/tree/main/Python%20Projects/Pokemon%20Analysis)
 
 
-### Project 4: Pandas Go Through
-- **Description:** This is just a 1 hour practice session of Pandas by going through the [youtube tutorial](https://www.youtube.com/watch?v=2uvysYbKdjM&t=58s)
-- **Link to Code:** 
 
 ## SQL Projects
 
