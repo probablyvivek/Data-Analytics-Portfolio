@@ -38,5 +38,5 @@ Here is the app : [The Summer Olympics Dashboard](https://summerolympics.streaml
 ## SQL Projects
 ### Project 1: Solving top 50 Leet Code Problems
 - **Description:** LeetCode is one of the go to resource material for practicing SQL. Here is the the [top 50 leet code problems](https://leetcode.com/studyplan/top-sql-50/)
-
+- **Link to Code** [Leet Code](https://github.com/probablyvivek/Data-Analytics-Portfolio/blob/main/SQL-Projects/Leet%20Code/Top50%20Problems.md)
 

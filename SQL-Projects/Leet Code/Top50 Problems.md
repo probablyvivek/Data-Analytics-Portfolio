@@ -3,6 +3,8 @@
     - [Solution 1](#solution-1)
   - [Problem 2](#problem-2)
     - [Solution 2](#solution-2)
+  - [Problem 3](#problem-3)
+    - [Solution 3](#solution-3)
 
 ## Top50 LeetCode Problems
 
@@ -21,7 +23,15 @@ WHERE low_fats = 'Y' AND recyclable = 'Y';
 #### Solution 2
 ```sql
 --- Find the names of the customer that are not referred by the customer with id = 2.
+SELECT name
+FROM Customer
+WHERE referee_id IS NULL or referee_id <>2
+```
+### [Problem 3](https://leetcode.com/problems/big-countries/?envType=study-plan-v2&envId=top-sql-50)
 
+#### Solution 3
+```sql
+-- Write a solution to find the name, population, and area of the big countries.
 
 
 ```
