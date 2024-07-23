@@ -8,6 +8,7 @@ Welcome to my Data Analytics Portfolio! This repository showcases my projects an
 		- [Project 2: Olympics](#project-2-olympics)
 		- [Project 3: Pokemon Data Analysis](#project-3-pokemon-data-analysis)
 	- [SQL Projects](#sql-projects)
+		- [Project 1: Solving top 50 Leet Code Problems](#project-1-solving-top-50-leet-code-problems)
 
 
 
@@ -35,4 +36,7 @@ Here is the app : [The Summer Olympics Dashboard](https://summerolympics.streaml
 
 
 ## SQL Projects
+### Project 1: Solving top 50 Leet Code Problems
+- **Description:** LeetCode is one of the go to resource material for practicing SQL. Here is the the [top 50 leet code problems](https://leetcode.com/studyplan/top-sql-50/)
+
 
