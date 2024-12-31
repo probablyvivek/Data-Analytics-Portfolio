@@ -5,6 +5,7 @@
     - [Solution 2](#solution-2)
   - [Problem 3](#problem-3)
     - [Solution 3](#solution-3)
+  - [Problem 4](#problem-4)
 
 ## Top50 LeetCode Problems
 
@@ -37,6 +38,4 @@ FROM World
 WHERE area >= 3000000 OR population >= 25000000;
 
 ```
-
-
-
+### [Problem 4](https://leetcode.com/problems/big-countries/?envType=study-plan-v2&envId=top-sql-50)
