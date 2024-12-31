@@ -8,7 +8,7 @@
 
 ## Top50 LeetCode Problems
 
-### [Problem 1](https://leetcode.com/problems/recyclable-and-low-fat-products/description/?envType=study-plan-v2&envId=top-sql-50) 
+### [Problem 1](https://leetcode.com/problems/recyclable-and-low-fat-products/description/?envType=study-plan-v2&envId=top-sql-50)
 
 #### Solution 1
 ```sql
@@ -37,5 +37,6 @@ FROM World
 WHERE area >= 3000000 OR population >= 25000000;
 
 ```
+
 
 
