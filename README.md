@@ -36,3 +36,6 @@ Here is the app : [The Summer Olympics Dashboard](https://summerolympics.streaml
 
 ## SQL Projects
 
+For SQL, I will be going through the following [Youtube](https://www.youtube.com/watch?v=qw--VYLpxG4&t=668s) video from Freecodecamp's Channel. And then we will go through the Leet Code SQL problems one by one.
+
+
