@@ -1,6 +1,7 @@
+
 # Data Analytics Portfolio
 
-Welcome to my **Data Analytics Portfolio**! This repository highlights my projects in **Python** and **SQL** and **Tableau** showcasing my expertise in data analytics, visualization, and storytelling. Below, you'll find detailed descriptions, links to code repositories, and live dashboards where applicable.
+Welcome to my **Data Analytics Portfolio**! This repository highlights my projects in **Python**, **SQL**, and **Tableau**, showcasing my expertise in data analytics, visualization, and storytelling. Explore detailed descriptions, code repositories, and live dashboards below.
 
 ---
 
@@ -14,6 +15,7 @@ Welcome to my **Data Analytics Portfolio**! This repository highlights my projec
     - [Project 3: Pokémon Data Analysis](#project-3-pokémon-data-analysis)
   - [SQL Projects](#sql-projects)
     - [Project 1: PGExercises](#project-1-pgexercises)
+    - [Project 2: LeetCode SQL Exercises](#project-2-leetcode-sql-exercises)
 
 ---
 
@@ -21,10 +23,10 @@ Welcome to my **Data Analytics Portfolio**! This repository highlights my projec
 
 ### Project 1: Euros 2024 Analysis
 - **Description:**
-  This project involves analyzing data from the Euros 2024 tournament, including **web scraping**, **data transformation**, and storing the data in a database. Building upon McKay Johns' tutorial, I extended it by creating a **Streamlit app** to visualize player shots and goals dynamically.
+  This project analyzes data from the Euros 2024 tournament, incorporating **web scraping**, **data transformation**, and database integration. Inspired by McKay Johns' tutorial, I extended the project with a **Streamlit app** for visualizing player shots and goals dynamically.
 - **Key Features:**
-  - Leveraged **Supabase APIs** and **SQL queries** for dynamic data access.
-  - Designed a **shot map** visualization using Matplotlib.
+  - Integrated **Supabase APIs** and **SQL queries** for dynamic data retrieval.
+  - Designed a **shot map** using Matplotlib.
 - **Links:**
   - [GitHub Code](https://github.com/probablyvivek/Data-Analytics-Portfolio/tree/main/Python-Projects/Euros)
   - [Streamlit Code](https://github.com/probablyvivek/Streamlit)
@@ -34,10 +36,10 @@ Welcome to my **Data Analytics Portfolio**! This repository highlights my projec
 
 ### Project 2: Summer Olympics Dashboard
 - **Description:**
-  Explored and analyzed the history of the **Summer Olympics** up to the 2020 Tokyo Games. Built a **Streamlit dashboard** for interactive data visualization and easy access to key insights.
+  This project explores and analyzes the complete history of the **Summer Olympics**, culminating in a **Streamlit dashboard** for interactive data visualization and insights.
 - **Key Features:**
-  - Designed user-friendly visualizations and insights into Olympic trends.
-  - Used **Streamlit** to create a seamless dashboard experience.
+  - Developed user-friendly visualizations to uncover Olympic trends.
+  - Leveraged **Streamlit** for an interactive and seamless user experience.
 - **Links:**
   - [GitHub Code](https://github.com/probablyvivek/Data-Analytics-Portfolio/tree/main/Python-Projects/Olympics)
   - [Live Dashboard](https://summerolympics.streamlit.app/)
@@ -46,10 +48,10 @@ Welcome to my **Data Analytics Portfolio**! This repository highlights my projec
 
 ### Project 3: Pokémon Data Analysis
 - **Description:**
-  Conducted an analysis of Pokémon data sourced from a **Kaggle dataset**, focusing on trends, attributes, and relationships among Pokémon species.
+  Conducted an in-depth analysis of Pokémon data using a **Kaggle dataset**, focusing on relationships among Pokémon attributes, types, and evolutions.
 - **Key Features:**
   - Cleaned and visualized data using Python.
-  - Explored correlations between Pokémon types, stats, and evolutions.
+  - Explored trends and insights among Pokémon characteristics.
 - **Links:**
   - [GitHub Code](https://github.com/probablyvivek/Data-Analytics-Portfolio/tree/main/Python%20Projects/Pokemon%20Analysis)
   - [Dataset Source (Kaggle)](https://www.kaggle.com/datasets/abcsds/pokemon)
@@ -60,20 +62,28 @@ Welcome to my **Data Analytics Portfolio**! This repository highlights my projec
 
 ### Project 1: PGExercises
 - **Description:**
-  A hands-on project aimed at mastering SQL through the **PGExercises** platform. This includes practice on foundational and advanced queries, such as data retrieval, aggregations, and nested subqueries.
+  A hands-on learning project focusing on SQL mastery using the **PGExercises** platform. Includes foundational and advanced query practice, covering topics such as data retrieval, aggregations, and nested subqueries.
 - **Learning Approach:**
   1. **PostgreSQL Setup:**
-     - Installed PostgreSQL via `brew install postgresql@15`.
+     - Installed PostgreSQL using `brew install postgresql@15`.
      - Created practice tables using [PG Exercises](https://pgexercises.com/gettingstarted.html).
-
   2. **Query Practice:**
-     - Started with [Basic SQL Questions](https://pgexercises.com/questions/basic/) to develop core skills.
-
+     - Began with [Basic SQL Questions](https://pgexercises.com/questions/basic/) to solidify core concepts.
+     - Progressed to complex problems, including joins, aggregations, and subqueries.
 - **Links:**
   - [PGExercises Repository](https://github.com/probablyvivek/Data-Analytics-Portfolio/tree/main/SQL-Projects/PGExercises)
 
 ---
 
-This portfolio showcases my ability to translate raw data into actionable insights, backed by strong technical skills and a passion for problem-solving. If you're interested in collaborating or discussing these projects, feel free to connect!
+### Project 2: LeetCode SQL Exercises
+- **Description:**
+  Solved SQL challenges on **LeetCode**, applying concepts from foundational practice to real-world scenarios. Focused on query optimization, pattern recognition, and problem-solving.
+- **Future Plans:**
+  - Expand this repository with solutions for advanced LeetCode SQL problems.
+  - Explore integration of SQL queries into **visualization tools** like Tableau.
+
+---
+
+This portfolio demonstrates my skills in transforming raw data into actionable insights and creating intuitive visualizations. Let's connect and discuss how I can contribute to your projects or collaborate on exciting ideas!
 
 ---
