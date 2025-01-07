@@ -1,41 +1,79 @@
 # Data Analytics Portfolio
 
-Welcome to my Data Analytics Portfolio! This repository showcases my projects and skills in data analytics, including work with Python and SQL.
+Welcome to my **Data Analytics Portfolio**! This repository highlights my projects in **Python** and **SQL** and **Tableau** showcasing my expertise in data analytics, visualization, and storytelling. Below, you'll find detailed descriptions, links to code repositories, and live dashboards where applicable.
+
+---
+
+## Table of Contents
 
 - [Data Analytics Portfolio](#data-analytics-portfolio)
+  - [Table of Contents](#table-of-contents)
   - [Python Projects](#python-projects)
-    - [Project 1: Euros 2024](#project-1-euros-2024)
-    - [Project 2: Olympics](#project-2-olympics)
-    - [Project 3: Pokemon Data Analysis](#project-3-pokemon-data-analysis)
+    - [Project 1: Euros 2024 Analysis](#project-1-euros-2024-analysis)
+    - [Project 2: Summer Olympics Dashboard](#project-2-summer-olympics-dashboard)
+    - [Project 3: Pokémon Data Analysis](#project-3-pokémon-data-analysis)
   - [SQL Projects](#sql-projects)
+    - [Project 1: PGExercises](#project-1-pgexercises)
 
-
+---
 
 ## Python Projects
-### Project 1: Euros 2024
-- **Description:** In this project, I analyze data from the Euros 2024 tournament. The project includes web scraping, data transformation, and storing the data in a database. This work is based on the tutorial from McKay Johns' course. [Course](https://mckay-s-site.thinkific.com)
-- **Link to Code:** [Euros 2024](https://github.com/probablyvivek/Data-Analytics-Portfolio/tree/main/Python-Projects/Euros)
 
-After getting the data into supabase, I decided to create a streamlit app for all the shots and goals taken by the players of each team.
-The app used supbase APIs and SQL queries to fetch the data and create the shot map using matplotlib.
-- **Link to Code:** [Streamlit](https://github.com/probablyvivek/Streamlit)
+### Project 1: Euros 2024 Analysis
+- **Description:**
+  This project involves analyzing data from the Euros 2024 tournament, including **web scraping**, **data transformation**, and storing the data in a database. Building upon McKay Johns' tutorial, I extended it by creating a **Streamlit app** to visualize player shots and goals dynamically.
+- **Key Features:**
+  - Leveraged **Supabase APIs** and **SQL queries** for dynamic data access.
+  - Designed a **shot map** visualization using Matplotlib.
+- **Links:**
+  - [GitHub Code](https://github.com/probablyvivek/Data-Analytics-Portfolio/tree/main/Python-Projects/Euros)
+  - [Streamlit Code](https://github.com/probablyvivek/Streamlit)
+  - [Live App](https://euros2024.streamlit.app/)
 
-You can check the app here: https://euros2024.streamlit.app/
+---
 
-### Project 2: Olympics
-- **Description:** This is an analysis of the whole of Summer Olympics Data till 2020 Tokyo Olympics. After the exploration, I created a streamlit app to have an easy access of the data for anyone interested.
-- **Link to Code:** [Olympics](https://github.com/probablyvivek/Data-Analytics-Portfolio/tree/main/Python-Projects/Olympics)
+### Project 2: Summer Olympics Dashboard
+- **Description:**
+  Explored and analyzed the history of the **Summer Olympics** up to the 2020 Tokyo Games. Built a **Streamlit dashboard** for interactive data visualization and easy access to key insights.
+- **Key Features:**
+  - Designed user-friendly visualizations and insights into Olympic trends.
+  - Used **Streamlit** to create a seamless dashboard experience.
+- **Links:**
+  - [GitHub Code](https://github.com/probablyvivek/Data-Analytics-Portfolio/tree/main/Python-Projects/Olympics)
+  - [Live Dashboard](https://summerolympics.streamlit.app/)
 
-Here is the app : [The Summer Olympics Dashboard](https://summerolympics.streamlit.app/)
+---
 
-### Project 3: Pokemon Data Analysis
-- **Description:** This is an analysis of Pokemon Data from a [Kaggle Dataset](https://www.kaggle.com/datasets/abcsds/pokemon)
-- **Link to Code:** [Pokemon Anaysis](https://github.com/probablyvivek/Data-Analytics-Portfolio/tree/main/Python%20Projects/Pokemon%20Analysis)
+### Project 3: Pokémon Data Analysis
+- **Description:**
+  Conducted an analysis of Pokémon data sourced from a **Kaggle dataset**, focusing on trends, attributes, and relationships among Pokémon species.
+- **Key Features:**
+  - Cleaned and visualized data using Python.
+  - Explored correlations between Pokémon types, stats, and evolutions.
+- **Links:**
+  - [GitHub Code](https://github.com/probablyvivek/Data-Analytics-Portfolio/tree/main/Python%20Projects/Pokemon%20Analysis)
+  - [Dataset Source (Kaggle)](https://www.kaggle.com/datasets/abcsds/pokemon)
 
-
+---
 
 ## SQL Projects
 
-For SQL, I will be going through the following [Youtube](https://www.youtube.com/watch?v=qw--VYLpxG4&t=668s) video from Freecodecamp's Channel. And then we will go through the Leet Code SQL problems one by one.
+### Project 1: PGExercises
+- **Description:**
+  A hands-on project aimed at mastering SQL through the **PGExercises** platform. This includes practice on foundational and advanced queries, such as data retrieval, aggregations, and nested subqueries.
+- **Learning Approach:**
+  1. **PostgreSQL Setup:**
+     - Installed PostgreSQL via `brew install postgresql@15`.
+     - Created practice tables using [PG Exercises](https://pgexercises.com/gettingstarted.html).
 
+  2. **Query Practice:**
+     - Started with [Basic SQL Questions](https://pgexercises.com/questions/basic/) to develop core skills.
 
+- **Links:**
+  - [PGExercises Repository](https://github.com/probablyvivek/Data-Analytics-Portfolio/tree/main/SQL-Projects/PGExercises)
+
+---
+
+This portfolio showcases my ability to translate raw data into actionable insights, backed by strong technical skills and a passion for problem-solving. If you're interested in collaborating or discussing these projects, feel free to connect!
+
+---
